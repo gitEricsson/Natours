@@ -1,0 +1,16 @@
+extends base
+
+block content 
+    main.main
+        .booking-form
+            svg.overview-box__icon.arrow-left-circle
+               use(xlink:href=`/img/icons.svg#icon-arrow-left-circle`)
+            h2.heading-secondary.ma-bt-lg Book an Appointment
+            div
+                each appointment in tour.appointments
+                    .overview-box__detail.booking(data-appointment-id=`${appointment._id}`, data-tour-id=`${tour.id}`)
+                            svg.overview-box__icon
+                                use(xlink:href=`/img/icons.svg#icon-calendar`)
+                            span.overview-box__label= appointment.date
+                
+            span.overview-box__text Clicking on a date will redirect you to a payment gateway page

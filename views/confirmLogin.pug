@@ -1,0 +1,17 @@
+//- extends base
+
+block content 
+    main.main
+        .login-form.confirm
+            h2.heading-secondary.ma-bt-lg Confirm Login
+            form.form.confirm--login
+                div.pin__form#pin-input
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input.pin__form__input(placeholder="_", type="number", step="1", min="0", max="9", autocomplete="no", pattern="\d*")
+                    input#pin-value(placeholder="_", type="hidden", name="pin")
+                .form__group
+                    button.btn.btn--green#submit Submit
