@@ -20,8 +20,6 @@ tokenSchema.methods.createSignupToken = function() {
     .update(signupToken)
     .digest('hex');
 
-  console.log(this);
-
   return signupToken;
 };
 

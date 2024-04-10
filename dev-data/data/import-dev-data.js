@@ -87,7 +87,6 @@ const importAppointments = async () => {
       });
     });
 
-    console.log(data);
     await Appointment.create(data);
 
     console.log('Appointments successfully loaded');

@@ -16,7 +16,6 @@ export default class SigninTokenFunctionality {
 
     this.inputs.forEach((input, index) => {
       input.addEventListener('input', e => {
-        console.log('handlerrr');
         this.handleInput(input, e.target.value, index, this.inputs);
       });
 

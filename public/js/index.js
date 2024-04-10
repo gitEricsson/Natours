@@ -38,7 +38,6 @@ if (loginForm) {
     const html = await login(email, password);
 
     if (!html) return (passwordInput.value = '');
-    console.log(html);
 
     // make container empty
     main.innerHTML = '';
@@ -80,7 +79,6 @@ if (document.body) {
     }
 
     if (e.target.classList.contains('arrow-left-circle')) {
-      console.log(e.target.classList);
       window.history.back();
     }
 
@@ -161,8 +159,6 @@ if (appointments)
         appointmentId = e.target.closest('.booking').dataset.appointmentId;
         tourId = e.target.closest('.booking').dataset.tourId;
       }
-
-      console.log(appointmentId, tourId);
 
       createBooking(appointmentId, tourId);
     });

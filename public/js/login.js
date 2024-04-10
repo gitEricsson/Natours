@@ -6,7 +6,7 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v4/users/login',
+      url: '/api/v4/users/login',
       data: {
         email,
         password
@@ -18,7 +18,7 @@ export const login = async (email, password) => {
 
       const res = await axios({
         method: 'GET',
-        url: 'http://127.0.0.1:3000/confirmLogin'
+        url: '/confirmLogin'
       });
 
       if (res.status === 200) {
@@ -41,7 +41,7 @@ export const confirmLogin = async (email, signinToken) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v4/users/confirmLogin',
+      url: '/api/v4/users/confirmLogin',
       data: {
         email,
         signinToken
@@ -63,7 +63,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v4/users/logout'
+      url: '/api/v4/users/logout'
     });
 
     if ((res.data.status = 'success')) location.reload(true);
@@ -80,7 +80,7 @@ axios.interceptors.response.use(
       try {
         const res = await axios({
           method: 'GET',
-          url: 'http://127.0.0.1:3000/api/v4/users/refreshToken'
+          url: '/api/v4/users/refreshToken'
         });
 
         if (res.status === 200) {
@@ -101,7 +101,7 @@ export const getMe = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/me'
+      url: '/me'
     });
 
     if (res.status === 200) document.body.innerHTML = res.data;
@@ -115,7 +115,7 @@ export const createBooking = async (appointmentId, tourId) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: `http://127.0.0.1:3000/api/v4/bookings/checkout-session/${tourId}`,
+      url: `/api/v4/bookings/checkout-session/${tourId}`,
       data: {
         appointment: appointmentId
       }
