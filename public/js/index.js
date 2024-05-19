@@ -2,7 +2,14 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { displayMap } from './leaflet';
-import { login, confirmLogin, logout, getMe, createBooking } from './login';
+import {
+  signup,
+  login,
+  confirmLogin,
+  logout,
+  getMe,
+  createBooking
+} from './login';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './flutter';
 import SigninTokenFunctionality from './pinLogin';
@@ -15,6 +22,7 @@ const cardHeader = document.querySelector('.card__header');
 const leaflet = document.getElementById('map');
 const main = document.querySelector('.main');
 const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
 // const logOutBtn = document.querySelector('.nav__el--logout');
 // const getMeBtn = document.querySelector('.nav__el--me');
 const userDataForm = document.querySelector('.form-user-data');
@@ -26,6 +34,33 @@ const appointments = document.querySelectorAll('.booking');
 if (leaflet) {
   const locations = JSON.parse(leaflet.dataset.locations);
   displayMap(locations);
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = document.getElementById('nameSignup').value;
+    const email = document.getElementById('emailSignup').value;
+    const password = document.getElementById('passwordSignup').value;
+    const passwordConfirm = document.getElementById('passwordConfirmSignup')
+      .value;
+
+    const html = await signup(name, email, password, passwordConfirm);
+
+    if (!html) {
+      password.value = '';
+      passwordConfirm.value = '';
+      return;
+    }
+
+    // make container empty
+    main.innerHTML = '';
+
+    // convert the returned html file which would be in string format to html and appending it to the container
+    main.appendChild(
+      new DOMParser().parseFromString(html, 'text/html').querySelector('.main')
+    );
+  });
 }
 
 if (loginForm) {

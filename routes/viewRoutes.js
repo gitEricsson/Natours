@@ -9,6 +9,14 @@ router.get('/', authController.isLoggedIn, viewController.getOverview); // booki
 
 router.get('/tour/:slug', authController.isLoggedIn, viewController.getTour);
 
+router.get('/signup', authController.isLoggedIn, viewController.getSignupForm);
+
+router.get(
+  '/confirmSignup',
+  authController.isLoggedIn,
+  viewController.getConfirmSignupForm
+);
+
 router.get('/login', authController.isLoggedIn, viewController.getLoginForm);
 
 router.get(

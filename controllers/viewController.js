@@ -37,6 +37,20 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getSignupForm = (req, res) => {
+  // 1) Render that template using data from 1)
+  res.status(200).render('signup', {
+    title: `Create an account`
+  });
+};
+
+exports.getConfirmSignupForm = (req, res) => {
+  // 1) Render that template using data from 1)
+  res.status(200).render('confirmSignup', {
+    title: `Confirm Signup`
+  });
+};
+
 exports.getLoginForm = (req, res) => {
   // 1) Render that template using data from 1)
   res.status(200).render('login', {

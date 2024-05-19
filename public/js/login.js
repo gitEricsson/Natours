@@ -2,8 +2,44 @@
 import axios from 'axios';
 import { showAlert } from './alerts';
 
+export const signup = async (name, email, password, passwordConfirm) => {
+  try {
+    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v4/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        passwordConfirm
+      }
+    });
+
+    console.log(res);
+
+    if (res.status === 200) {
+      // localStorage.setItem('accessToken', res.data.token);
+
+      const res = await axios({
+        method: 'GET',
+        url: '/confirmSignup'
+      });
+
+      if (res.status === 200) {
+        return res.data;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    showAlert('error', err.response.data.message);
+  }
+};
+
 export const login = async (email, password) => {
   try {
+    // submit login details
     const res = await axios({
       method: 'POST',
       url: '/api/v4/users/login',
@@ -16,6 +52,7 @@ export const login = async (email, password) => {
     if (res.status === 200) {
       // localStorage.setItem('accessToken', res.data.token);
 
+      // get confirmLogin form and send html response to index.js to activate pin functionality
       const res = await axios({
         method: 'GET',
         url: '/confirmLogin'
