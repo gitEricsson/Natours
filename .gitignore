@@ -2,5 +2,3 @@ node_modules/
 *.env
 .parcel-cache
 .cache/
-/public/js/bundle.js
-/public/js/bundle.js.map

@@ -90,6 +90,8 @@ Some of the challenges I faced along the way were:
 - User settings
 - User Profile
 - Booked Tours page
+- Update user data page
+- Upload profile picture feature
 
 ### Updates
 
@@ -106,8 +108,9 @@ Some of the challenges I faced along the way were:
 - Nested booking routes: /tours/:id/bookings and /users/:id/bookings
 - Improved tour dates: The Tour now includes 'participants' and a 'soldOut' field for each date in the DB, allowing users to select a date and check if the tour is still available before booking on both Front and Back ends
 - Booking Payment System using [Flutterwave](https://developer.flutterwave.com) in place of Stripe
-- Mailing Sytem using [Brevo](https://developers.brevo.com)(for production) inplace of Sendgrid
+- Mailing Sytem using [Brevo](https://developers.brevo.com)(for production) instead of Sendgrid
 - Tour Location and Map Feature using [Leaflet](https://leafletjs.com/index.html) in lieu of Mapbox
+- Signup form Implementation
 
 ### Links
 

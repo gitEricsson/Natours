@@ -25,9 +25,10 @@ const loginForm = document.querySelector('.form--login');
 const signupForm = document.querySelector('.form--signup');
 // const logOutBtn = document.querySelector('.nav__el--logout');
 // const getMeBtn = document.querySelector('.nav__el--me');
-const userDataForm = document.querySelector('.form-user-data');
-const userPasswordForm = document.querySelector('.form-user-password');
+// const userDataForm = document.querySelector('.form-user-data');
+// const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+const signupBtn = document.querySelector('.btn--signup');
 const appointments = document.querySelectorAll('.booking');
 
 // DELEGATION
@@ -39,6 +40,8 @@ if (leaflet) {
 if (signupForm) {
   signupForm.addEventListener('submit', async e => {
     e.preventDefault();
+    signupBtn.textContent = 'Processing...';
+
     const name = document.getElementById('nameSignup').value;
     const email = document.getElementById('emailSignup').value;
     const password = document.getElementById('passwordSignup').value;
@@ -70,7 +73,11 @@ if (loginForm) {
     const passwordInput = document.getElementById('password');
     const password = passwordInput.value;
 
+    console.log(email, password);
+
     const html = await login(email, password);
+
+    console.log(html);
 
     if (!html) return (passwordInput.value = '');
 
@@ -99,8 +106,9 @@ const confirmLoginFunctionality = email => {
   });
 };
 
+// doing this instead of directly attaching the link to the href so as to access the axios interceptor feature for the refresh token
 if (document.body) {
-  document.body.addEventListener('click', function(e) {
+  document.body.addEventListener('click', async function(e) {
     if (e.target.classList.contains('nav__el--logout')) {
       logout();
     }
@@ -110,7 +118,12 @@ if (document.body) {
       e.target.classList.contains('nav__el--me')
       // e.target.className.includes('nav__el--me') --- would return anSVGAnimated string if an svg icon is clicked on
     ) {
-      getMe();
+      // awaiting the page fetch before we can get access to the form on the page
+      await getMe();
+      const userDataForm = document.querySelector('.form-user-data');
+      const userPasswordForm = document.querySelector('.form-user-password');
+      console.log(userDataForm, userPasswordForm);
+      userEdit(userDataForm, userPasswordForm);
     }
 
     if (e.target.classList.contains('arrow-left-circle')) {
@@ -139,39 +152,49 @@ if (document.body) {
 
 // if (getMeBtn) getMeBtn.addEventListener('click', getMe);
 
-if (userDataForm) {
-  userDataForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const form = new FormData();
-    form.append('name', document.getElementById('name').value);
-    form.append('email', document.getElementById('email').value);
-    form.append('photo', document.getElementById('photo').files[0]);
+const userEdit = (userDataForm, userPasswordForm) => {
+  console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
 
-    // const name = document.getElementById('name').value;
-    // const email = document.getElementById('email').value;
-    updateSettings(form, 'data');
-  });
-}
+  if (userDataForm) {
+    console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
 
-if (userPasswordForm) {
-  userPasswordForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    userDataForm.addEventListener('submit', e => {
+      console.log(userDataForm);
+      e.preventDefault();
+      const form = new FormData();
+      form.append('name', document.getElementById('name').value);
+      form.append('email', document.getElementById('email').value);
+      form.append('photo', document.getElementById('photo').files[0]);
 
-    const passwordCurrent = document.getElementById('password-current').value;
-    const password = document.getElementById('password').value;
-    const passwordConfirm = document.getElementById('password-confirm').value;
-    await updateSettings(
-      { passwordCurrent, password, passwordConfirm },
-      'password'
-    );
+      console.log(form);
 
-    document.querySelector('.btn--save-password').textContent = 'Save password';
-    document.getElementById('password-current').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('password-confirm').value = '';
-  });
-}
+      // const name = document.getElementById('name').value;
+      // const email = document.getElementById('email').value;
+      updateSettings(form, 'data');
+    });
+  }
+
+  if (userPasswordForm) {
+    userPasswordForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      document.querySelector('.btn--save-password').textContent = 'Updating...';
+
+      const passwordCurrent = document.getElementById('password-current').value;
+      const password = document.getElementById('password').value;
+      const passwordConfirm = document.getElementById('password-confirm').value;
+      await updateSettings(
+        { passwordCurrent, password, passwordConfirm },
+        'password'
+      );
+
+      document.querySelector('.btn--save-password').textContent =
+        'Save password';
+      document.getElementById('password-current').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('password-confirm').value = '';
+    });
+  }
+};
 
 if (bookBtn)
   bookBtn.addEventListener('click', e => {
