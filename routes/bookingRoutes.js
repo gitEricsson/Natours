@@ -10,11 +10,7 @@ router.use(authController.protect);
 // GET is for an endpoint call without a booking date and generally for a tour, while POST is for an endpoint with one
 router
   .route('/checkout-session/:tourId')
-  .post(
-    appointmentController.isSoldOut,
-    bookingController.getCheckoutSession,
-    appointmentController.updateParticipants
-  );
+  .post(appointmentController.isSoldOut, bookingController.getCheckoutSession);
 // .get(
 //   appointmentController.isSoldOut,
 //   bookingController.getCheckoutSession,

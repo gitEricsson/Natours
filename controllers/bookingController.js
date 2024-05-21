@@ -24,11 +24,14 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     method: 'POST',
     url: 'https://api.flutterwave.com/v3/payments',
     data: {
-      tx_ref: `${req.user.id}-${req.params.tourId}-${Date.now()}`,
-      amount: tour.price * 1000,
+      tx_ref: `${req.user.id}-${req.params.tourId}-${
+        req.body.appointment
+      }-${Date.now()}`,
+      amount: tour.price * 100,
       currency: 'NGN',
       redirect_url: `https://www.flutterwave.com`,
       //   redirect_url: `${req.protocol}://${req.get('host')}/`,
+      //   redirect_url: `/confirmBooking`,
       meta: {
         consumer_id: req.params.tourId
       },
@@ -95,8 +98,18 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  await Booking.create({});
-  next();
+  const ref = req.query.tx_ref.split('-');
+  const user = ref[0];
+  const tour = ref[1];
+  const appointment = ref[2];
+
+  if (req.query.status === 'successful') {
+    const price = await Tour.findById(tour).price;
+    await Booking.create({ user, tour, appointment, price });
+  }
+
+  const data = { appointment, tour };
+  next(data);
 });
 
 exports.isBooked = catchAsync(async (req, res, next) => {

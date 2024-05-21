@@ -2,16 +2,9 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { displayMap } from './leaflet';
-import {
-  signup,
-  login,
-  confirmLogin,
-  logout,
-  getMe,
-  createBooking
-} from './login';
+import { signup, login, confirmLogin, logout, getMe } from './auth';
 import { updateSettings } from './updateSettings';
-import { bookTour } from './flutter';
+import { createBooking } from './flutter';
 import SigninTokenFunctionality from './pinLogin';
 
 // DOM ELEMENTS
@@ -73,11 +66,7 @@ if (loginForm) {
     const passwordInput = document.getElementById('password');
     const password = passwordInput.value;
 
-    console.log(email, password);
-
     const html = await login(email, password);
-
-    console.log(html);
 
     if (!html) return (passwordInput.value = '');
 
@@ -122,7 +111,6 @@ if (document.body) {
       await getMe();
       const userDataForm = document.querySelector('.form-user-data');
       const userPasswordForm = document.querySelector('.form-user-password');
-      console.log(userDataForm, userPasswordForm);
       userEdit(userDataForm, userPasswordForm);
     }
 
@@ -153,20 +141,13 @@ if (document.body) {
 // if (getMeBtn) getMeBtn.addEventListener('click', getMe);
 
 const userEdit = (userDataForm, userPasswordForm) => {
-  console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-
   if (userDataForm) {
-    console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
-
     userDataForm.addEventListener('submit', e => {
-      console.log(userDataForm);
       e.preventDefault();
       const form = new FormData();
       form.append('name', document.getElementById('name').value);
       form.append('email', document.getElementById('email').value);
       form.append('photo', document.getElementById('photo').files[0]);
-
-      console.log(form);
 
       // const name = document.getElementById('name').value;
       // const email = document.getElementById('email').value;

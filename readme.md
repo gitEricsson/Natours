@@ -6,7 +6,7 @@
     
   </a>
 
-# Jonas Schmedtmann - Natours
+# Natours
 
 </div>
 
@@ -19,6 +19,7 @@
   - [Updates](#updates)
   - [Links](#links)
 - [My process](#my-process)
+  - [Keys](#keys)
   - [Built with](#built-with)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
@@ -31,13 +32,13 @@ Natours is a real-world RESTful API and server-side rendering WebApp for booking
 
 ### The Challenge
 
-My goal was to recreate Jonas' Natours WebApp from scratch and make some updates to it.
+My goal was to recreate [Jonas Schmedtmann's](https://github.com/jonasschmedtmann) Natours WebApp from scratch and make some updates to it.
 
 Some of the challenges I faced along the way were:
 
 - Integrating [Flutterwave](https://developer.flutterwave.com) in place of Stripe due to accessibility issues
 - Replacing [Leaflet](https://leafletjs.com/index.html) with Mapbox as the later is now a premium tool
-- Implementing [Brevo](https://developers.brevo.com) inplace of Sendgrid due to SignUp problems encountered
+- Implementing [Brevo](https://developers.brevo.com) in place of Sendgrid due to SignUp problems encountered
 - Executing my project on [Render](https://render.com/) instead of Heroku as the free-to-deploy plan isn't available anymore
 - Bainstorming the UI design, Application Logic, and Business Logic for the updates
 
@@ -53,8 +54,8 @@ Some of the challenges I faced along the way were:
 - Creating, reading, updating, and deleting users on the database
 - 'Top 5 Cheap Tours', 'Monthly Plan', 'Tour Stats', 'Tours within Radius', and 'Distances to Tours from a Point' endpoints
 - 'Password Reset', 'Forgot Password', and 'Update Current User Password' endpoints
-- User authentication with JWT
-- User Authorization and Permission: Admin, Lead-Guide, Guide, User
+- User Authentication with JWT
+- User Authorization and Permission: Admin, Lead-Guide, Guide, User (OAuth 2.0)
 - User input data validation
 - Password encryption with salt and hash (bcrypt)
 - Password reset token encryption (SHA 256)
@@ -103,7 +104,7 @@ Some of the challenges I faced along the way were:
 - User Email Address Confirmation after Signup
 - Keep Users logged in with Refresh tokens
 - Two-factor Authentication per Login Implementation on both Front and Back ends
-- Automatic Focus and Navigation pin confirmation feature
+- Automatic Focus and Navigation pin confirmation feature (UI and UX considerations)
 - Restriction that users can only review a tour that they have actually booked
 - Nested booking routes: /tours/:id/bookings and /users/:id/bookings
 - Improved tour dates: The Tour now includes 'participants' and a 'soldOut' field for each date in the DB, allowing users to select a date and check if the tour is still available before booking on both Front and Back ends
@@ -111,6 +112,7 @@ Some of the challenges I faced along the way were:
 - Mailing Sytem using [Brevo](https://developers.brevo.com)(for production) instead of Sendgrid
 - Tour Location and Map Feature using [Leaflet](https://leafletjs.com/index.html) in lieu of Mapbox
 - Signup form Implementation
+- Checkout session for booking an appointment
 
 ### Links
 
@@ -118,6 +120,16 @@ Some of the challenges I faced along the way were:
 - Live Site URL: [Live site here](https://ericsson-mapty.netlify.app/)
 
 ## My process
+
+### Keys
+
+You can use any of the keys below to make a card mock payment or get more from [Flutter's API documentation](https://developer.flutterwave.com/docs/integration-guides/testing-helpers/#cards)
+
+| Type                            | Card number         | CVV | PIN  | Expiry | OTP   |
+| :------------------------------ | :------------------ | :-- | :--- | :----- | :---- |
+| MasterCard PIN authentication   | 5531886652142950    | 564 | 3310 | 09/32  | 12345 |
+| Verve Card PIN authentication 2 | 5061460166976054667 | 564 | 3310 | 10/29  | -     |
+| Visa Card 3DS authentication    | 4187427415564246    | 828 | 3310 | 09/35  | 12345 |
 
 ### Built with
 

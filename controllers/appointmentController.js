@@ -31,26 +31,28 @@ exports.isSoldOut = catchAsync(async (req, res, next) => {
 
 exports.updateParticipants = catchAsync(async (req, res, next) => {
   const appointment = await Appointment.findById(
-    req.body.appointment
+    req.data.appointment
   ).populate('bookings', { _id: 1, tour: 0, user: 0 });
 
   const bookingsPerAppointment = appointment.bookings.length;
 
-  const tour = await Tour.findById(req.body.tour);
+  const tour = await Tour.findById(req.data.tour);
 
   if (bookingsPerAppointment < tour.maxGroupSize) {
-    await Appointment.findByIdAndUpdate(req.body.appointment, {
+    await Appointment.findByIdAndUpdate(req.data.appointment, {
       participants: bookingsPerAppointment,
       soldOut: false
     });
   }
 
   if (bookingsPerAppointment === tour.maxGroupSize) {
-    await Appointment.findByIdAndUpdate(req.body.appointment, {
+    await Appointment.findByIdAndUpdate(req.data.appointment, {
       participants: bookingsPerAppointment,
       soldOut: true
     });
   }
+
+  next();
 });
 
 exports.getAppointmentId = catchAsync(async (req, res, next) => {

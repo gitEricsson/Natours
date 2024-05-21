@@ -1563,6 +1563,14 @@ body {
     margin-top: 0.5rem;
   }
 
+  .nav__user-img {
+    margin: 0;
+  }
+
+  .nav__el--me span {
+    display: none;
+  }
+
   .nav__el--cta {
     padding: 0;
   }

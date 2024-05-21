@@ -2,6 +2,7 @@ const express = require('express');
 const viewController = require('../controllers/viewController');
 const authController = require('../controllers/authController');
 const bookingController = require('../controllers/bookingController');
+const appointmentController = require('../controllers/appointmentController');
 
 const router = express.Router();
 
@@ -15,6 +16,12 @@ router.get(
   '/confirmSignup',
   authController.isLoggedIn,
   viewController.getConfirmSignupForm
+);
+
+router.get(
+  '/confirmSignup/:signupToken',
+  authController.confirmSignup,
+  viewController.getHomePage
 );
 
 router.get('/login', authController.isLoggedIn, viewController.getLoginForm);
@@ -33,6 +40,13 @@ router.get(
   '/appointments/:slug',
   authController.isLoggedIn,
   viewController.getAppointmentsList
+);
+
+router.get(
+  '/confirmBooking',
+  bookingController.createBookingCheckout,
+  appointmentController.updateParticipants,
+  viewController.getHomePage
 );
 
 // WITHOUT API

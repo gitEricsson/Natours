@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const Tour = require('../models/tourModel');
-const User = require('../models/userModel');
+// const User = require('../models/userModel');
 const Bookings = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -51,6 +51,11 @@ exports.getConfirmSignupForm = (req, res) => {
   });
 };
 
+exports.getHomePage = (req, res) => {
+  // redirect to the home page after confirming signup
+  res.redirect('/');
+};
+
 exports.getLoginForm = (req, res) => {
   // 1) Render that template using data from 1)
   res.status(200).render('login', {
@@ -64,6 +69,11 @@ exports.getConfirmLoginForm = (req, res) => {
     title: `Confirm Login`
   });
 };
+
+// exports.getConfirmSignup = (req, res) => {
+//   // Call the API
+//   // confirmSignup(req.params.signupToken);
+// };
 
 exports.getAccount = (req, res) => {
   // 1) Render that template using data from 1)

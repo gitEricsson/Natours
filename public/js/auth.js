@@ -4,11 +4,9 @@ import { showAlert } from './alerts';
 
 export const signup = async (name, email, password, passwordConfirm) => {
   try {
-    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-
     const res = await axios({
       method: 'POST',
-      url: '/api/v4/users/signup',
+      url: 'http://127.0.0.1:3000/api/v4/users/signup',
       data: {
         name,
         email,
@@ -17,14 +15,12 @@ export const signup = async (name, email, password, passwordConfirm) => {
       }
     });
 
-    console.log(res);
-
     if (res.status === 200) {
       // localStorage.setItem('accessToken', res.data.token);
 
       const res = await axios({
         method: 'GET',
-        url: '/confirmSignup'
+        url: 'http://127.0.0.1:3000/confirmSignup'
       });
 
       if (res.status === 200) {
@@ -32,7 +28,6 @@ export const signup = async (name, email, password, passwordConfirm) => {
       }
     }
   } catch (err) {
-    console.log(err);
     showAlert('error', err.response.data.message);
   }
 };
@@ -42,7 +37,7 @@ export const login = async (email, password) => {
     // submit login details
     const res = await axios({
       method: 'POST',
-      url: '/api/v4/users/login',
+      url: 'http://127.0.0.1:3000/api/v4/users/login',
       data: {
         email,
         password
@@ -55,7 +50,7 @@ export const login = async (email, password) => {
       // get confirmLogin form and send html response to index.js to activate pin functionality
       const res = await axios({
         method: 'GET',
-        url: '/confirmLogin'
+        url: 'http://127.0.0.1:3000/confirmLogin'
       });
 
       if (res.status === 200) {
@@ -63,7 +58,6 @@ export const login = async (email, password) => {
       }
     }
   } catch (err) {
-    console.log(err);
     showAlert('error', err.response.data.message);
   }
 };
@@ -78,7 +72,7 @@ export const confirmLogin = async (email, signinToken) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: '/api/v4/users/confirmLogin',
+      url: 'http://127.0.0.1:3000/api/v4/users/confirmLogin',
       data: {
         email,
         signinToken
@@ -100,7 +94,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: '/api/v4/users/logout'
+      url: 'http://127.0.0.1:3000/api/v4/users/logout'
     });
 
     if ((res.data.status = 'success')) location.reload(true);
@@ -117,7 +111,7 @@ axios.interceptors.response.use(
       try {
         const res = await axios({
           method: 'GET',
-          url: '/api/v4/users/refreshToken'
+          url: 'http://127.0.0.1:3000/api/v4/users/refreshToken'
         });
 
         if (res.status === 200) {
@@ -138,32 +132,12 @@ export const getMe = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: '/me'
+      url: 'http://127.0.0.1:3000/me'
     });
 
     if (res.status === 200) document.body.innerHTML = res.data;
   } catch (err) {
     // Handle err;
     document.body.innerHTML = err.response.data;
-  }
-};
-
-export const createBooking = async (appointmentId, tourId) => {
-  try {
-    const res = await axios({
-      method: 'POST',
-      url: `/api/v4/bookings/checkout-session/${tourId}`,
-      data: {
-        appointment: appointmentId
-      }
-    });
-
-    console.log(res);
-    if (res.status === 200) {
-      console.log(res.data.response.data.link);
-      window.location = res.data.response.data.link;
-    }
-  } catch (err) {
-    showAlert('error', err.response.data.message);
   }
 };

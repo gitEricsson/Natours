@@ -27,73 +27,78 @@ const signToken = (id, token) => {
 //   });
 // };
 
-const createSendToken = catchAsync(async ({ req, res, user, statusCode }) => {
-  const accessToken = signToken(user._id, 'ACCESS');
-  const newRefreshToken = signToken(user._id, 'REFRESH');
+const createSendToken = catchAsync(
+  async ({ req, res, user, statusCode, next }) => {
+    const accessToken = signToken(user._id, 'ACCESS');
+    const newRefreshToken = signToken(user._id, 'REFRESH');
 
-  const userRefreshTokens = await Token.findOne({ user: user._id });
+    const userRefreshTokens = await Token.findOne({ user: user._id });
 
-  const accessCookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_ACCESS_COOKIE_EXPIRES_IN * 1000
-    ),
-    httpOnly: true
-  };
+    const accessCookieOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_ACCESS_COOKIE_EXPIRES_IN * 1000
+      ),
+      httpOnly: true
+    };
 
-  const refreshCookieOptions = {
-    expires: new Date(
-      Date.now() +
-        process.env.JWT_REFRESH_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true
-  };
+    const refreshCookieOptions = {
+      expires: new Date(
+        Date.now() +
+          process.env.JWT_REFRESH_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true
+    };
 
-  if (process.env.NODE_ENV === 'production') {
-    refreshCookieOptions.secure = true;
-    accessCookieOptions.secure = true;
-  }
-
-  // Saving refreshToken with current user
-  // userRefreshTokens.refreshToken = newRefreshTokenArray
-  //   ? [...newRefreshTokenArray, newRefreshToken]
-  //   : [newRefreshToken];
-
-  // await userRefreshTokens.save();
-
-  if (!userRefreshTokens) {
-    const token = await Token.create({
-      user: user._id
-    });
-
-    token.refreshToken = [newRefreshToken];
-
-    await token.save();
-  }
-
-  if (userRefreshTokens) {
-    userRefreshTokens.refreshToken = [
-      ...userRefreshTokens.refreshToken,
-      newRefreshToken
-    ];
-
-    await userRefreshTokens.save();
-  }
-
-  // Creates Secure Cookie with refresh token
-  res.cookie('accessJwt', accessToken, accessCookieOptions);
-  res.cookie('refreshJwt', newRefreshToken, refreshCookieOptions);
-
-  user.password = undefined;
-
-  // Send authorization roles and access token to user
-  res.status(statusCode).json({
-    status: 'success',
-    token: accessToken,
-    data: {
-      user
+    if (process.env.NODE_ENV === 'production') {
+      refreshCookieOptions.secure = true;
+      accessCookieOptions.secure = true;
     }
-  });
-});
+
+    // Saving refreshToken with current user
+    // userRefreshTokens.refreshToken = newRefreshTokenArray
+    //   ? [...newRefreshTokenArray, newRefreshToken]
+    //   : [newRefreshToken];
+
+    // await userRefreshTokens.save();
+
+    if (!userRefreshTokens) {
+      const token = await Token.create({
+        user: user._id
+      });
+
+      token.refreshToken = [newRefreshToken];
+
+      await token.save();
+    }
+
+    if (userRefreshTokens) {
+      userRefreshTokens.refreshToken = [
+        ...userRefreshTokens.refreshToken,
+        newRefreshToken
+      ];
+
+      await userRefreshTokens.save();
+    }
+
+    // Creates Secure Cookie with refresh token
+    res.cookie('accessJwt', accessToken, accessCookieOptions);
+    res.cookie('refreshJwt', newRefreshToken, refreshCookieOptions);
+
+    user.password = undefined;
+
+    //If the frontend is making the direct call
+    if (req.path.split('/').includes('confirmSignup')) return next();
+
+    // Send authorization roles and access token to user
+    res.status(statusCode).json({
+      status: 'success',
+      token: accessToken,
+      data: {
+        user
+      }
+    });
+  }
+);
 // const createSendToken = (user, statusCode, res) => {
 //   const token = signToken(user._id);
 
@@ -139,7 +144,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   try {
     const confirmURL = `${req.protocol}://${req.get(
       'host'
-    )}/api/v4/users/confirmEmail/${signupToken}`;
+    )}/confirmSignup/${signupToken}`; // If you want to try and access the API directly from POSTMAN, replace the confirmSignup with confirmEmail
 
     await new Email(newUser, confirmURL).sendConfirmSignup();
 
@@ -190,7 +195,13 @@ exports.confirmSignup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(user, url).sendWelcome();
 
-  createSendToken({ req: req, res: res, user: user, statusCode: 201 });
+  createSendToken({
+    req: req,
+    res: res,
+    user: user,
+    statusCode: 201,
+    next: next
+  });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -263,7 +274,13 @@ exports.confirmLogin = catchAsync(async (req, res, next) => {
   token.signinToken = undefined;
   await token.save();
 
-  createSendToken({ req: req, res: res, user: user, statusCode: 200 });
+  createSendToken({
+    req: req,
+    res: res,
+    user: user,
+    statusCode: 200,
+    next: next
+  });
 });
 
 exports.logout = catchAsync(async (req, res) => {
@@ -566,7 +583,14 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 3) UpdatechangedPasswordAt property for the user in the usermodel
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  // createSendToken(user, 200, res);
+  createSendToken({
+    req: req,
+    res: res,
+    user: user,
+    statusCode: 200,
+    next: next
+  });
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -586,5 +610,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  // createSendToken(user, 200, res);
+  createSendToken({
+    req: req,
+    res: res,
+    user: user,
+    statusCode: 200,
+    next: next
+  });
 });
