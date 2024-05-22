@@ -99,17 +99,26 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   const ref = req.query.tx_ref.split('-');
-  const user = ref[0];
-  const tour = ref[1];
-  const appointment = ref[2];
+  const userId = ref[0];
+  const tourId = ref[1];
+  const appointmentId = ref[2];
+
+  const tour = await Tour.findById(tourId);
+  res.locals.tour = tour;
+  res.locals.appointment = appointmentId;
 
   if (req.query.status === 'successful') {
-    const price = await Tour.findById(tour).price;
-    await Booking.create({ user, tour, appointment, price });
+    const { price } = tour;
+
+    await Booking.create({
+      user: userId,
+      tour: tourId,
+      appointment: appointmentId,
+      price
+    });
   }
 
-  const data = { appointment, tour };
-  next(data);
+  next();
 });
 
 exports.isBooked = catchAsync(async (req, res, next) => {

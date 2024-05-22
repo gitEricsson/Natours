@@ -28,7 +28,7 @@
 
 ### About
 
-Natours is a real-world RESTful API and server-side rendering WebApp for booking Tours.
+Natours is a real-world RESTful API alongside a server-side rendering WebApp for booking Tours.
 
 ### The Challenge
 
@@ -113,6 +113,7 @@ Some of the challenges I faced along the way were:
 - Tour Location and Map Feature using [Leaflet](https://leafletjs.com/index.html) in lieu of Mapbox
 - Signup form Implementation
 - Checkout session for booking an appointment
+- Update no of participants after each booking confirmation
 
 ### Links
 

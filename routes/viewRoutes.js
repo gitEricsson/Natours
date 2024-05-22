@@ -44,6 +44,7 @@ router.get(
 
 router.get(
   '/confirmBooking',
+  authController.isLoggedIn,
   bookingController.createBookingCheckout,
   appointmentController.updateParticipants,
   viewController.getHomePage
