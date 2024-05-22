@@ -29,9 +29,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       }-${Date.now()}`,
       amount: tour.price * 100,
       currency: 'NGN',
-      redirect_url: `https://www.flutterwave.com`,
+      redirect_url: `https://natours-rw6l.onrender.com/confirmBooking`,
+      // redirect_url: `https://www.flutterwave.com`,
       //   redirect_url: `${req.protocol}://${req.get('host')}/`,
-      //   redirect_url: `/confirmBooking`,
       meta: {
         consumer_id: req.params.tourId
       },
