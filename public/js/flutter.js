@@ -9,7 +9,7 @@ export const createBooking = async (appointmentId, tourId) => {
 
     const res = await axios({
       method: 'POST',
-      url: `http://127.0.0.1:3000/api/v4/bookings/checkout-session/${tourId}`,
+      url: `/api/v4/bookings/checkout-session/${tourId}`,
       data: {
         appointment: appointmentId
       }

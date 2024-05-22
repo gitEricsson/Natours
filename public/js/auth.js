@@ -6,7 +6,7 @@ export const signup = async (name, email, password, passwordConfirm) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v4/users/signup',
+      url: '/api/v4/users/signup',
       data: {
         name,
         email,
@@ -20,7 +20,7 @@ export const signup = async (name, email, password, passwordConfirm) => {
 
       const res = await axios({
         method: 'GET',
-        url: 'http://127.0.0.1:3000/confirmSignup'
+        url: '/confirmSignup'
       });
 
       if (res.status === 200) {
@@ -37,7 +37,7 @@ export const login = async (email, password) => {
     // submit login details
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v4/users/login',
+      url: '/api/v4/users/login',
       data: {
         email,
         password
@@ -50,7 +50,7 @@ export const login = async (email, password) => {
       // get confirmLogin form and send html response to index.js to activate pin functionality
       const res = await axios({
         method: 'GET',
-        url: 'http://127.0.0.1:3000/confirmLogin'
+        url: '/confirmLogin'
       });
 
       if (res.status === 200) {
@@ -72,7 +72,7 @@ export const confirmLogin = async (email, signinToken) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v4/users/confirmLogin',
+      url: '/api/v4/users/confirmLogin',
       data: {
         email,
         signinToken
@@ -94,7 +94,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v4/users/logout'
+      url: '/api/v4/users/logout'
     });
 
     if ((res.data.status = 'success')) location.reload(true);
@@ -111,7 +111,7 @@ axios.interceptors.response.use(
       try {
         const res = await axios({
           method: 'GET',
-          url: 'http://127.0.0.1:3000/api/v4/users/refreshToken'
+          url: '/api/v4/users/refreshToken'
         });
 
         if (res.status === 200) {
@@ -132,7 +132,7 @@ export const getMe = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/me'
+      url: '/me'
     });
 
     if (res.status === 200) document.body.innerHTML = res.data;
