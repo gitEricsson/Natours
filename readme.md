@@ -117,7 +117,7 @@ Some of the challenges I faced along the way were:
 ### Links
 
 - Code URL: [Github Repo here](https://github.com/gitEricsson/Natours)
-- Live Site URL: [Live site here](https://natours-rw6l.onrender.com)
+- Live Site URL: [Live site here](https://natours-6ybv.onrender.com)
 
 ## My process
 
