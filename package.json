@@ -11,8 +11,8 @@
     "start:dev": "SET NODE_ENV=development&& nodemon server.js",
     "start:prod": "SET NODE_ENV=production&& nodemon server.js",
     "debug": "ndb server.js",
-    "watch:js": "npx parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url .",
-    "build:js": "npx parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url ."
+    "watch:js": "npx -p parcel-bundler parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url .",
+    "build:js": "npx -p parcel-bundler parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url ."
   },
   "author": "Ericsson Raphael",
   "license": "ISC",
