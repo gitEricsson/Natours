@@ -102,7 +102,7 @@ Some of the challenges I faced along the way were:
 - Re-authentication before a high-value action
 - Blacklist of untrusted JWTs Implementation
 - User Email Address Confirmation after Signup
-- Keep Users logged in with Refresh tokens
+- Keep Users logged in with Refresh tokens using Interceptors
 - Two-factor Authentication per Login Implementation on both Front and Back ends
 - Automatic Focus and Navigation pin confirmation feature (UI and UX considerations)
 - Restriction that users can only review a tour that they have actually booked
